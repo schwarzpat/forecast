@@ -1,0 +1,22 @@
+library(readxl)
+
+# read in the first Excel file
+file1 <- read_excel("file1.xlsx")
+
+# calculate the MAPE for the first file
+mape1 <- mean(abs(file1$predicted_value - file1$true_value) / file1$true_value) * 100
+
+# read in the second Excel file
+file2 <- read_excel("file2.xlsx")
+
+# calculate the MAPE for the second file
+mape2 <- mean(abs(file2$predicted_value - file2$true_value) / file2$true_value) * 100
+
+# compare the MAPEs
+if (mape1 < mape2) {
+  print("The first file has a lower MAPE.")
+} else if (mape1 > mape2) {
+  print("The second file has a lower MAPE.")
+} else {
+  print("The MAPEs are the same.")
+}
