@@ -7,13 +7,14 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
 ```{r}
 library(finnts)
 
 hist_data <- timetk::m4_monthly %>%
-  dplyr::filter(date >= "2014-01-01") %>%
+  dplyr::filter(date >= "2010-01-01") %>%
   dplyr::rename(Date = date) %>%
   dplyr::mutate(id = as.character(id))
 
@@ -23,7 +24,7 @@ print(unique(hist_data$id))
 ```
 
 
-```{r}
+```{r, error=FALSE}
 finn_output <- forecast_time_series(
   input_data = hist_data,
   combo_variables = c("id"),
