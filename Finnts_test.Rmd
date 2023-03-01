@@ -1,0 +1,67 @@
+---
+title: "finnts"
+author: "Patrick Schwarz"
+date: "2023-03-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(finnts)
+
+hist_data <- timetk::m4_monthly %>%
+  dplyr::filter(date >= "2014-01-01") %>%
+  dplyr::rename(Date = date) %>%
+  dplyr::mutate(id = as.character(id))
+
+print(hist_data)
+
+print(unique(hist_data$id))
+```
+
+
+```{r}
+finn_output <- forecast_time_series(
+  input_data = hist_data,
+  combo_variables = c("id"),
+  target_variable = "value",
+  date_type = "month",
+  forecast_horizon = 3,
+  back_test_scenarios = NULL, 
+  models_to_run = c("arima",
+                    "ets",
+                    "prophet",
+                    "xgboost",
+                    "tbats"),
+  run_global_models = FALSE, 
+  run_model_parallel = FALSE
+)
+```
+
+```{r}
+finn_output$final_fcst %>%
+  head() %>%
+  print()
+
+finn_output$final_fcst %>%
+  tail() %>%
+  print()
+```
+
+
+```{r}
+print(finn_output$back_test_data)
+```
+
+
+```{r}
+print(finn_output$back_test_best_MAPE)
+```
+
+```{r}
+print(finn_output$final_fcst)
+```
+
